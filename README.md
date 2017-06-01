@@ -1,4 +1,4 @@
-# National Routing Guide Tests
+# National Routeing Guide Tests
 
 This repository contains a number of tests written in the [Gherkin](https://cucumber.io/docs/reference) syntax that can be used to check whether the [National Routeing Guide](http://data.atoc.org/routeing-guide) has been correctly applied to a journey.
 
