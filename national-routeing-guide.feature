@@ -1,19 +1,6 @@
 
 Feature: Validate journeys against the national routeing guide
 
-  # TODO add missing passing points
-  Scenario: A through train is always valid
-    Given a journey:
-      | CHX | alight   | train     |
-      | WAE | stopping | train     |
-      | LBG | passing  | train     |
-      | ORP | passing  | train     |
-      | SEV | passing  | train     |
-      | TON | passing  | train     |
-      | HIB | egress   | train     |
-    Then the following routes should be:
-      | ***** | valid   |
-
   Scenario: The geographically shortest route is always valid
     Given a journey:
       | SEV | alight   | train     |
