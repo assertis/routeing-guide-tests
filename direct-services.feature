@@ -10,4 +10,4 @@ Feature: A direct service is always valid
       | SEV | passing  | train     |
       | TON | passing  | train     |
       | HIB | arrive   | train     |
-    Then the journey should be "valid"
+    Then the journey should be "valid" because "Direct services are always valid"
