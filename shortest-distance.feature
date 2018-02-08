@@ -12,7 +12,7 @@ Feature: A journey within 3 miles of the shortest distance is valid
       | TBW | HIB | 1.53 |
       | HIB | TON | 3.35 |
       | TON | PDW | 5.29 |
-    Then the journey should be "valid" because "journey distance (10.17) is within 3 miles of 13.17"
+    Then the journey should be "valid" because "journey is within three miles of the shortest distance"
 
   # Petts Wood to St Mary Cray, via Bromley instead of Chistlehurst
   Scenario: Any journey within the specified margin of the shortest route is valid
@@ -28,7 +28,7 @@ Feature: A journey within 3 miles of the shortest distance is valid
       | BKL | BMS | 1.06 |
       | BMS | BKL | 1.06 |
       | BKL | SMY | 2.76 |
-    Then the journey should be "valid" because "journey distance (6.68) is within 3 miles of 6.83"
+    Then the journey should be "valid" because "journey is within three miles of the shortest distance"
 
   # Ashford to Dover via Ramsgate
   Scenario: The journey more than 3 miles longer than the shortest is not valid
@@ -60,9 +60,9 @@ Feature: A journey within 3 miles of the shortest distance is valid
       | DEA | WAM | 1.64 |
       | WAM | MTM | 2.73 |
       | MTM | DVP | 4.94 |
-    Then the journey should be "invalid" because "journey did not meet any passing criteria"
+    Then the journey should be "invalid" because "failed long distance rules"
 
-  # Ashford to Dover a bus at Canterbury West
+  # Ashford to Dover via a bus at Canterbury West
   Scenario: Distances of non-rail (including timetabled-bus) legs are not included in the distance calculations
     Given a journey:
       | AFK | depart   | train     |
@@ -78,5 +78,5 @@ Feature: A journey within 3 miles of the shortest distance is valid
       | CIL | CRT | 2.08 |
       | CRT | CBW | 3.16 |
       | CBW | DVP | 10.1 |
-    Then the journey should be "valid" because "journey distance (14.23) is within 3 miles of 24.22"
+    Then the journey should be "valid" because "journey is within three miles of the shortest distance"
 
