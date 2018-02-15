@@ -2,7 +2,7 @@ Feature:
   A local journey via a common routeing point is valid if there are no other routeing points that result in a shorter
   journey and the journey is direct to and from the common routeing point.
 
-  # Hypothetical
+  @hypothetical
   Scenario: The shortest route is valid
     Given a journey:
       | AAA | depart   | train     |
@@ -20,7 +20,7 @@ Feature:
     And the group "G" contains "BBB,CCC"
     Then the journey should be "valid" because "journey goes via a valid routeing point"
 
-  # Hypothetical
+  @hypothetical
   Scenario: The shortest route is valid
     Given a journey:
       | AAA | depart   | train     |
@@ -38,7 +38,7 @@ Feature:
     And the group "G" contains "BBB,CCC"
     Then the journey should be "valid" because "journey goes via a valid routeing point"
 
-  # Hypothetical
+  @hypothetical
   Scenario: The shortest route is valid
     Given a journey:
       | AAA | depart   | train     |
