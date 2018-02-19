@@ -61,7 +61,7 @@ Feature: A journey within 3 miles of the shortest distance is valid
       | WAM | MTM | 2.73 |
       | MTM | DVP | 4.94 |
     And there is a "SOS" from "AFK" to "DVP" on route "00000" for "1000"
-    Then the journey should be "invalid" because "failed long distance rules"
+    Then the journey should be "invalid" because "journey does not follow a permitted route"
 
   # Ashford to Dover via a bus at Canterbury West
   Scenario: Distances of non-rail (including timetabled-bus) legs are not included in the distance calculations
