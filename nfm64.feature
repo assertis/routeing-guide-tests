@@ -19,9 +19,12 @@ Feature: The fare from origin to destination must not be cheaper than the fare f
     And "SOG" has the routeing points "TON,G15"
     And "DVP" has the routeing points "DVP"
     And the group "G15" contains "SLQ,HGS"
+    And "G15" to "DVP" has a permitted route "KA" with:
+      | KA | G15 | AFK |
+      | MS | AFK | DVP |
     Then the journey should be "valid" on "00000"
 
-  # Winchester to Brighton via Basingstoke and Clapham Junction
+  # Winchester to Brighton via Basingstoke and Clapham Junction, note the calling points are abbreviated
   Scenario: Journey is not within 3 miles of the shortest distance and has a fare for 00700 but not for 00000
     Given a journey:
       | WIN | depart   | train     |
@@ -38,5 +41,8 @@ Feature: The fare from origin to destination must not be cheaper than the fare f
     And there is a "CDS" from "WIN" to "BTN" on route "00700" for "1460"
     And there is a "CDS" from "BSK" to "BTN" on route "00700" for "1680"
     And "WIN" has the routeing points "BSK,ESL"
-    And "BTN" has the routeing points "BTN"
-    Then the journey should be "valid" on "00700"
+    And the group "G04" contains "BTN"
+    And "BSK" to "G04" has a permitted route "LE,LB" with:
+      | LE | BSK | CLJ |
+      | LB | CLJ | G04 |
+    Then the journey should be "valid" on "00000"
