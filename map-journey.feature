@@ -1,6 +1,6 @@
 Feature: Ensure map journeys follow a valid sequence of maps
 
-  Scenario:
+  Scenario: The path of the map journey must follow a permitted sequence of maps and links within those maps
     Given a journey:
       | RUG | depart   | train     |
       | COV | change   | train     |
