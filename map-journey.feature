@@ -71,3 +71,119 @@ Feature: Ensure map journeys follow a valid sequence of maps
     And "WRM" has the routeing points "BCU,G33"
     And the group "G33" contains "DCH,DCW,UPW,WEY"
     Then the journey should be "invalid" because "failed nfm64"
+
+  # Nuneaton to York via Peterborough not valid on 00000 but is valid on 00076
+  Scenario: Some journeys are mapped via a specific location
+    Given a journey:
+      | NUN | depart  | train |
+      | HNK | calling | train |
+      | NBR | calling | train |
+      | LEI | calling | train |
+      | MMO | calling | train |
+      | OKM | calling | train |
+      | SMD | calling | train |
+      | PBO | change  | train |
+      | GRA | calling | train |
+      | NNG | passing | train |
+      | RET | passing | train |
+      | DON | passing | train |
+      | YRK | arrive  | train |
+    And a "SDS" fare on route "00000"
+    And route "00076" goes via "PBO"
+    And the shortest distance between "NUN" and "YRK" is "119.68" miles
+    And the following distances:
+      | NUN | HNK |  3.78 |
+      | HNK | NBR |  7.93 |
+      | NBR | LEI |  6.73 |
+      | LEI | MMO | 14.79 |
+      | MMO | OKM | 11.36 |
+      | OKM | SMD | 13.78 |
+      | SMD | PBO | 12.09 |
+      | PBO | GRA | 29.08 |
+      | GRA | NNG | 14.63 |
+      | NNG | RET | 18.51 |
+      | RET | DON | 17.35 |
+      | DON | YRK | 32.54 |
+    And "NUN" has the routeing points "NUN"
+    And "YRK" has the routeing points "YRK"
+    And the group "G47" contains "NCT,NNG"
+    And there is a "SDS" from "NUN" to "YRK" on route "00000" for "2720"
+    And there is a "SDS" from "NUN" to "YRK" on route "00076" for "3150"
+    And "NUN" to "YRK" has a permitted route "BP,BM,MN" with:
+      | BP | NUN | LEI |
+      | BP | LEI | MMO |
+      | BP | MMO | OKM |
+      | BP | OKM | PBO |
+      | BM | NUN | TAM |
+      | MN | HGT | YRK |
+    And "NUN" to "PBO" has a permitted route "BP" with:
+      | BP | NUN | LEI |
+      | BP | LEI | MMO |
+      | BP | MMO | OKM |
+      | BP | OKM | PBO |
+    And "PBO" to "YRK" has a permitted route "KY" with:
+      | KY | PBO | GRA |
+      | KY | GRA | G47 |
+      | KY | G47 | RET |
+      | KY | RET | DON |
+      | KY | DON | YRK |
+    Then the journey should be "invalid" because "journey does not follow a permitted route"
+
+
+  # Nuneaton to York via Peterborough not valid on 00000 but is valid on 00076
+  Scenario: Some journeys are mapped via a specific location
+    Given a journey:
+      | NUN | depart  | train |
+      | HNK | calling | train |
+      | NBR | calling | train |
+      | LEI | calling | train |
+      | MMO | calling | train |
+      | OKM | calling | train |
+      | SMD | calling | train |
+      | PBO | change  | train |
+      | GRA | calling | train |
+      | NNG | passing | train |
+      | RET | passing | train |
+      | DON | passing | train |
+      | YRK | arrive  | train |
+    And a "SDS" fare on route "00076"
+    And route "00076" goes via "PBO"
+    And the shortest distance between "NUN" and "YRK" is "119.68" miles
+    And the following distances:
+      | NUN | HNK |  3.78 |
+      | HNK | NBR |  7.93 |
+      | NBR | LEI |  6.73 |
+      | LEI | MMO | 14.79 |
+      | MMO | OKM | 11.36 |
+      | OKM | SMD | 13.78 |
+      | SMD | PBO | 12.09 |
+      | PBO | GRA | 29.08 |
+      | GRA | NNG | 14.63 |
+      | NNG | RET | 18.51 |
+      | RET | DON | 17.35 |
+      | DON | YRK | 32.54 |
+    And "NUN" has the routeing points "NUN"
+    And "YRK" has the routeing points "YRK"
+    And the group "G47" contains "NCT,NNG"
+    And there is a "SDS" from "NUN" to "YRK" on route "00000" for "2720"
+    And there is a "SDS" from "NUN" to "YRK" on route "00076" for "3150"
+    And "NUN" to "YRK" has a permitted route "BP,BM,MN" with:
+      | BP | NUN | LEI |
+      | BP | LEI | MMO |
+      | BP | MMO | OKM |
+      | BP | OKM | PBO |
+      | BM | NUN | TAM |
+      | MN | HGT | YRK |
+    And "NUN" to "PBO" has a permitted route "BP" with:
+      | BP | NUN | LEI |
+      | BP | LEI | MMO |
+      | BP | MMO | OKM |
+      | BP | OKM | PBO |
+    And "PBO" to "YRK" has a permitted route "KY" with:
+      | KY | PBO | GRA |
+      | KY | GRA | G47 |
+      | KY | G47 | RET |
+      | KY | RET | DON |
+      | KY | DON | YRK |
+    Then the journey should be "valid" because "journey passed long distance rules"
+
