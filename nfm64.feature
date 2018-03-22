@@ -8,6 +8,7 @@ Feature: The fare from origin to destination must not be cheaper than the fare f
       | HGS | change   | train     |
       | AFK | change   | train     |
       | DVP | arrive   | train     |
+    And a "SDS" fare on route "00000"
     And the shortest distance between "SOG" and "DVP" is "62.15" miles
     And the following distances:
       | SOG | SLQ | 17.88 |
@@ -22,7 +23,7 @@ Feature: The fare from origin to destination must not be cheaper than the fare f
     And "G15" to "DVP" has a permitted route "KA" with:
       | KA | G15 | AFK |
       | MS | AFK | DVP |
-    Then the journey should be "valid" on "00000"
+    Then the journey should be "valid" because "journey passed long distance rules"
 
   # Winchester to Brighton via Basingstoke and Clapham Junction
   Scenario: Journey is not within 3 miles of the shortest distance and has a fare for 00700 but not for 00000
@@ -53,6 +54,7 @@ Feature: The fare from origin to destination must not be cheaper than the fare f
       | WVF | passing  | train     |
       | HSK | passing  | train     |
       | BTN | arrive   | train     |
+    And a "SDS" fare on route "00700"
     And the shortest distance between "WIN" and "BTN" is "65.29" miles
     And the following distances:
       | WIN | BSK | 18.82 |
@@ -109,4 +111,4 @@ Feature: The fare from origin to destination must not be cheaper than the fare f
       | LB | HHE | WVF |
       | LB | WVF | HSK |
       | LB | HSK | G04 |
-    Then the journey should be "valid" on "00000"
+    Then the journey should be "invalid" because "failed nfm64"

@@ -69,5 +69,168 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | TV | G09 | TAM |
     Then the journey should be "invalid" because "journey does not follow a permitted route"
 
-  @wip
-  Scenario: Legs on a Thameslink service must follow the LO map
+  Scenario: The journey must have routeing points
+    Given a journey:
+      | WRM | depart  | train |
+      | HOL | calling | train |
+      | HAM | calling | train |
+      | POO | calling | train |
+      | PKS | calling | train |
+      | BSM | calling | train |
+      | BMH | calling | train |
+      | SOU | change  | train |
+      | SDN | calling | train |
+      | SOA | calling | train |
+      | ESL | calling | train |
+      | SHW | calling | train |
+      | WIN | calling | train |
+      | BSK | calling | train |
+      | FNB | calling | train |
+      | WOK | calling | train |
+      | SUR | calling | train |
+      | NEM | calling | train |
+      | WIM | calling | train |
+      | CLJ | calling | train |
+      | WAT | calling | train |
+      | EUS | arrive  | train |
+    And the shortest distance between "WRM" and "EUS" is "117.04" miles
+    And the following distances:
+      | WRM | HOL | 2.11  |
+      | HOL | HAM | 2.8   |
+      | HAM | POO | 2.19  |
+      | POO | PKS | 1.83  |
+      | PKS | BSM | 1.31  |
+      | BSM | BMH | 2.61  |
+      | BMH | SOU | 28.8  |
+      | SOU | SDN | 1.99  |
+      | SDN | SOA | 2.31  |
+      | SOA | ESL | 1.39  |
+      | ESL | SHW | 3.83  |
+      | SHW | WIN | 3.14  |
+      | WIN | BSK | 18.82 |
+      | BSK | FNB | 14.59 |
+      | FNB | WOK | 8.87  |
+      | WOK | SUR | 12.31 |
+      | SUR | NEM | 2.27  |
+      | NEM | WIM | 2.55  |
+      | WIM | CLJ | 3.32  |
+      | CLJ | WAT | 5.35  |
+      | WAT | EUS | 16.44 |
+    And "WRM" has the routeing points "BCU,G33"
+    And the group "G33" contains "DCH,DCW,UPW,WEY"
+    Then the journey should be "invalid" because "failed nfm64"
+
+  # Nuneaton to York via Peterborough not valid on 00000 but is valid on 00076
+  Scenario: Some journeys are mapped via a specific location
+    Given a journey:
+      | NUN | depart  | train |
+      | HNK | calling | train |
+      | NBR | calling | train |
+      | LEI | calling | train |
+      | MMO | calling | train |
+      | OKM | calling | train |
+      | SMD | calling | train |
+      | PBO | change  | train |
+      | GRA | calling | train |
+      | NNG | passing | train |
+      | RET | passing | train |
+      | DON | passing | train |
+      | YRK | arrive  | train |
+    And a "SDS" fare on route "00000"
+    And route "00076" goes via "PBO"
+    And the shortest distance between "NUN" and "YRK" is "119.68" miles
+    And the following distances:
+      | NUN | HNK |  3.78 |
+      | HNK | NBR |  7.93 |
+      | NBR | LEI |  6.73 |
+      | LEI | MMO | 14.79 |
+      | MMO | OKM | 11.36 |
+      | OKM | SMD | 13.78 |
+      | SMD | PBO | 12.09 |
+      | PBO | GRA | 29.08 |
+      | GRA | NNG | 14.63 |
+      | NNG | RET | 18.51 |
+      | RET | DON | 17.35 |
+      | DON | YRK | 32.54 |
+    And "NUN" has the routeing points "NUN"
+    And "YRK" has the routeing points "YRK"
+    And the group "G47" contains "NCT,NNG"
+    And there is a "SDS" from "NUN" to "YRK" on route "00000" for "2720"
+    And there is a "SDS" from "NUN" to "YRK" on route "00076" for "3150"
+    And "NUN" to "YRK" has a permitted route "BP,BM,MN" with:
+      | BP | NUN | LEI |
+      | BP | LEI | MMO |
+      | BP | MMO | OKM |
+      | BP | OKM | PBO |
+      | BM | NUN | TAM |
+      | MN | HGT | YRK |
+    And "NUN" to "PBO" has a permitted route "BP" with:
+      | BP | NUN | LEI |
+      | BP | LEI | MMO |
+      | BP | MMO | OKM |
+      | BP | OKM | PBO |
+    And "PBO" to "YRK" has a permitted route "KY" with:
+      | KY | PBO | GRA |
+      | KY | GRA | G47 |
+      | KY | G47 | RET |
+      | KY | RET | DON |
+      | KY | DON | YRK |
+    Then the journey should be "invalid" because "journey does not follow a permitted route"
+
+
+  # Nuneaton to York via Peterborough not valid on 00000 but is valid on 00076
+  Scenario: Some journeys are mapped via a specific location
+    Given a journey:
+      | NUN | depart  | train |
+      | HNK | calling | train |
+      | NBR | calling | train |
+      | LEI | calling | train |
+      | MMO | calling | train |
+      | OKM | calling | train |
+      | SMD | calling | train |
+      | PBO | change  | train |
+      | GRA | calling | train |
+      | NNG | passing | train |
+      | RET | passing | train |
+      | DON | passing | train |
+      | YRK | arrive  | train |
+    And a "SDS" fare on route "00076"
+    And route "00076" goes via "PBO"
+    And the shortest distance between "NUN" and "YRK" is "119.68" miles
+    And the following distances:
+      | NUN | HNK |  3.78 |
+      | HNK | NBR |  7.93 |
+      | NBR | LEI |  6.73 |
+      | LEI | MMO | 14.79 |
+      | MMO | OKM | 11.36 |
+      | OKM | SMD | 13.78 |
+      | SMD | PBO | 12.09 |
+      | PBO | GRA | 29.08 |
+      | GRA | NNG | 14.63 |
+      | NNG | RET | 18.51 |
+      | RET | DON | 17.35 |
+      | DON | YRK | 32.54 |
+    And "NUN" has the routeing points "NUN"
+    And "YRK" has the routeing points "YRK"
+    And the group "G47" contains "NCT,NNG"
+    And there is a "SDS" from "NUN" to "YRK" on route "00000" for "2720"
+    And there is a "SDS" from "NUN" to "YRK" on route "00076" for "3150"
+    And "NUN" to "YRK" has a permitted route "BP,BM,MN" with:
+      | BP | NUN | LEI |
+      | BP | LEI | MMO |
+      | BP | MMO | OKM |
+      | BP | OKM | PBO |
+      | BM | NUN | TAM |
+      | MN | HGT | YRK |
+    And "NUN" to "PBO" has a permitted route "BP" with:
+      | BP | NUN | LEI |
+      | BP | LEI | MMO |
+      | BP | MMO | OKM |
+      | BP | OKM | PBO |
+    And "PBO" to "YRK" has a permitted route "KY" with:
+      | KY | PBO | GRA |
+      | KY | GRA | G47 |
+      | KY | G47 | RET |
+      | KY | RET | DON |
+      | KY | DON | YRK |
+    Then the journey should be "valid" because "journey passed long distance rules"

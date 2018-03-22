@@ -21,7 +21,7 @@ Feature:
     Then the journey should be "valid" because "journey goes via a valid routeing point"
 
   @hypothetical
-  Scenario: The shortest route is valid
+  Scenario: The longest route is valid because it goes via the routeing point with the shortest distance
     Given a journey:
       | AAA | depart   | train     |
       | CCC | change   | train     |
@@ -39,7 +39,7 @@ Feature:
     Then the journey should be "valid" because "journey goes via a valid routeing point"
 
   @hypothetical
-  Scenario: The shortest route is valid
+  Scenario: The second shortest routeing point is not valid
     Given a journey:
       | AAA | depart   | train     |
       | DDD | change   | train     |
