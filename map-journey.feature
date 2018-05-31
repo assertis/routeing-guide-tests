@@ -234,3 +234,41 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | KY | RET | DON |
       | KY | DON | YRK |
     Then the journey should be "valid" because "journey passed long distance rules"
+
+  # Norwich to Coventry via Rugby is nearly valid, but not
+  Scenario: Some journeys are mapped via a specific location
+    Given a journey:
+      | NRW | depart  | train |
+      | ELY | calling | train |
+      | PBO | change  | train |
+      | OKM | calling | train |
+      | MMO | calling | train |
+      | LEI | calling | train |
+      | NUN | calling | train |
+      | RUG | change  | train |
+      | COV | arrive  | train |
+    And a "SDS" fare on route "00700"
+    And the shortest distance between "NUN" and "YRK" is "161.88" miles
+    And the following distances:
+      | ELY | NRW | 53.70 |
+      | ELY | PBO | 30.48 |
+      | OKM | PBO | 25.87 |
+      | MMO | OKM | 11.36 |
+      | LEI | MMO | 14.79 |
+      | LEI | NUN | 18.44 |
+      | NUN | RUG | 14.54 |
+      | COV | RUG | 11.46 |
+    And "NRW" has the routeing points "NRW"
+    And "COV" has the routeing points "COV"
+    And "NRW" to "COV" has a permitted route "AB,BI" with:
+      | ELY | PBO | AB |
+      | NRW | ELY | AB |
+      | NUN | G02 | AB |
+      | NUN | G59 | AB |
+      | NUN | LEI | AB |
+      | OKM | MMO | AB |
+      | PBO | OKM | AB |
+      | MMO | LEI | AB |
+      | LEI | NUN | AB |
+      | RUG | COV | BI |
+    Then the journey should be "invalid" because "journey does not follow a permitted route"
