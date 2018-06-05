@@ -35,7 +35,7 @@ Feature: Double backs are not permitted unless an easement applies
       | HGR | passing  | train     |
       | NWX | passing  | train     |
       | LBG | arrive   | train     |
-    And the shortest distance between "SDB" and "MAN" is "27.70" miles
+    And the shortest distance between "TON" and "LBG" is "27.70" miles
     And the following distances:
       | TON | HIB | 3.35  |
       | HIB | TON | 3.35  |

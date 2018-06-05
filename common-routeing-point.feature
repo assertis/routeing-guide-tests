@@ -17,6 +17,7 @@ Feature:
       | DDD | EEE | 1 |
     And "AAA" has the routeing points "G,DDD"
     And "EEE" has the routeing points "G,DDD"
+    And the shortest distance between "AAA" and "EEE" is "5" miles
     And the group "G" contains "BBB,CCC"
     Then the journey should be "valid" because "journey goes via a valid routeing point"
 
@@ -35,6 +36,7 @@ Feature:
       | DDD | EEE | 1 |
     And "AAA" has the routeing points "G,DDD"
     And "EEE" has the routeing points "G,DDD"
+    And the shortest distance between "AAA" and "EEE" is "5" miles
     And the group "G" contains "BBB,CCC"
     Then the journey should be "valid" because "journey goes via a valid routeing point"
 
@@ -53,6 +55,7 @@ Feature:
       | DDD | EEE | 1 |
     And "AAA" has the routeing points "G,DDD"
     And "EEE" has the routeing points "G,DDD"
+    And the shortest distance between "AAA" and "EEE" is "5" miles
     And the group "G" contains "BBB,CCC"
     Then the journey should be "invalid" because "not via the shortest routeing point"
 

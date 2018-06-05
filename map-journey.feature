@@ -40,7 +40,7 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | AAP | passing  | train     |
       | FPK | passing  | train     |
       | KGX | arrive   | train     |
-    And the shortest distance between "RUG" and "NUN" is "128.67" miles
+    And the shortest distance between "DBY" and "KGX" is "128.67" miles
     And the following distances:
       | DBY | CHD | 24.15 |
       | CHD | SHF | 12.25 |
@@ -236,7 +236,7 @@ Feature: Ensure map journeys follow a valid sequence of maps
     Then the journey should be "valid" because "journey passed long distance rules"
 
   # Norwich to Coventry via Rugby is nearly valid, but not
-  Scenario: Some journeys are mapped via a specific location
+  Scenario: Journey's must follow every link in the maps
     Given a journey:
       | NRW | depart  | train |
       | ELY | calling | train |
@@ -248,7 +248,7 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | RUG | change  | train |
       | COV | arrive  | train |
     And a "SDS" fare on route "00700"
-    And the shortest distance between "NUN" and "YRK" is "161.88" miles
+    And the shortest distance between "NRW" and "COV" is "161.88" miles
     And the following distances:
       | ELY | NRW | 53.70 |
       | ELY | PBO | 30.48 |

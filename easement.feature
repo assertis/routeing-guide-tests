@@ -32,7 +32,7 @@ Feature: Easements relax rules of the National Routeing Guide
       | LGE | 3 |
       | SPO | 1 |
       | SPO | 2 |
-    And the shortest distance between "SPO" and "LGE" is "5.44" miles
+    And the shortest distance between "SPO" and "EMD" is "5.44" miles
     And the following distances:
       | SPO | DBY | 2.53  |
       | DBY | SPO | 2.53  |
