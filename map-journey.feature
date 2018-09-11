@@ -272,3 +272,66 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | LEI | NUN | AB |
       | RUG | COV | BI |
     Then the journey should be "invalid" because "journey does not follow a permitted route"
+
+  # TODO
+  # Scenario: Fares routed via a location are validated to and from that location
+
+  # Norwich to Stafford is valid via London on route 00452 as the fares have a cross London marker
+  # Note that the portion from G01 to G65 does not follow the map and is only valid as it's direct
+  @inprogress
+  Scenario: Cross London fares are valid via London
+    Given a journey:
+      | NRW | depart  | train |
+      | SMK | calling | train |
+      | IPS | calling | train |
+      | MNG | calling | train |
+      | COL | change  | train |
+      | MKT | calling | train |
+      | WTM | calling | train |
+      | SNF | calling | train |
+      | RMF | calling | train |
+      | SRA | calling | train |
+      | LST | change  | tube  |
+      | EUS | calling | train |
+      | WFJ | calling | train |
+      | BLY | calling | train |
+      | MKC | calling | train |
+      | RUG | calling | train |
+      | NUN | calling | train |
+      | STA | arrive  | train |
+    And a "SDS" fare on route "00452" with a xLondon marker
+    And the shortest distance between "NRW" and "COV" is "183.89" miles
+    And the following distances:
+      | ELY | NRW | 53.70 |
+      | ELY | PBO | 30.48 |
+      | OKM | PBO | 25.87 |
+      | MMO | OKM | 11.36 |
+      | LEI | MMO | 14.79 |
+      | LEI | NUN | 18.44 |
+      | NUN | RUG | 14.54 |
+      | COV | RUG | 11.46 |
+    And "NRW" has the routeing points "NRW"
+    And "STA" has the routeing points "G65"
+    And the group "G37" contains "RMF"
+    And the group "G74" contains "SRA"
+    And the group "G01" contains "LST,EUS"
+    And "NRW" to "G65" has a permitted route "AB,BV" with:
+    # shortened but essentially not valid
+      | NRW | ELY | AB |
+      | RUG | COV | BV |
+    And "NRW" to "G01" has a permitted route "EA" with:
+      | NRW | SMK | EA |
+      | SMK | IPS | EA |
+      | IPS | MNG | EA |
+      | MNG | COL | EA |
+      | COL | MKT | EA |
+      | MKT | WTM | EA |
+      | WTM | SNF | EA |
+      | SNF | G37 | EA |
+      | G37 | G74 | EA |
+      | G74 | G01 | EA |
+    And "G01" to "G65" has a permitted route "SF" with:
+    # shortened but not valid because it goes G01 -> WIJ -> WTJ and the journey misses WIJ
+      | G01 | WIJ | SF |
+      | WIJ | WFJ | SF |
+    Then the journey should be "valid" because "journey follows a permitted route"
