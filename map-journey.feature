@@ -277,22 +277,22 @@ Feature: Ensure map journeys follow a valid sequence of maps
   # Scenario: Fares routed via a location are validated to and from that location
 
   # Norwich to Stafford is valid via London on route 00452 as the fares have a cross London marker
-  # Note that the portion from G01 to G65 does not follow the map and is only valid as it's direct
-  @inprogress
+  # Note that the portion from G01 to G65 does not follow the map and we've manually added G01 to WFJ in SF
   Scenario: Cross London fares are valid via London
     Given a journey:
       | NRW | depart  | train |
+      | DIS | calling | train |
       | SMK | calling | train |
       | IPS | calling | train |
       | MNG | calling | train |
-      | COL | change  | train |
+      | COL | calling | train |
       | MKT | calling | train |
       | WTM | calling | train |
       | SNF | calling | train |
       | RMF | calling | train |
       | SRA | calling | train |
-      | LST | change  | tube  |
-      | EUS | calling | train |
+      | LST | change  | train |
+      | EUS | change  | tube  |
       | WFJ | calling | train |
       | BLY | calling | train |
       | MKC | calling | train |
@@ -300,38 +300,53 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | NUN | calling | train |
       | STA | arrive  | train |
     And a "SDS" fare on route "00452" with a xLondon marker
-    And the shortest distance between "NRW" and "COV" is "183.89" miles
+    And there is a "SOS" from "NRW" to "STA" on route "00000" for "3050"
+    And the shortest distance between "NRW" and "STA" is "183.89" miles
     And the following distances:
-      | ELY | NRW | 53.70 |
-      | ELY | PBO | 30.48 |
-      | OKM | PBO | 25.87 |
-      | MMO | OKM | 11.36 |
-      | LEI | MMO | 14.79 |
-      | LEI | NUN | 18.44 |
-      | NUN | RUG | 14.54 |
-      | COV | RUG | 11.46 |
+      | NRW | SMK |  34.3600 |
+      | SMK | IPS |  11.8800 |
+      | IPS | MNG |   9.3000 |
+      | MNG | COL |   7.7800 |
+      | COL | MKT |   5.0400 |
+      | MKT | WTM |   8.0500 |
+      | WTM | SNF |  18.4100 |
+      | SNF | RMF |   7.8200 |
+      | RMF | SRA |   8.3300 |
+      | SRA | LST |   4.0400 |
+      | LST | EUS |  17.8900 |
+      | EUS | WFJ |  17.4700 |
+      | WFJ | BLY |  29.2300 |
+      | BLY | MKC |   3.1500 |
+      | MKC | RUG |  32.7700 |
+      | RUG | NUN |  14.5400 |
+      | NUN | STA |  32.1600 |
     And "NRW" has the routeing points "NRW"
     And "STA" has the routeing points "G65"
+    And the group "G65" contains "STA"
     And the group "G37" contains "RMF"
     And the group "G74" contains "SRA"
     And the group "G01" contains "LST,EUS"
     And "NRW" to "G65" has a permitted route "AB,BV" with:
     # shortened but essentially not valid
-      | NRW | ELY | AB |
-      | RUG | COV | BV |
+      | AB | NRW | ELY |
+      | BV | RUG | G65 |
     And "NRW" to "G01" has a permitted route "EA" with:
-      | NRW | SMK | EA |
-      | SMK | IPS | EA |
-      | IPS | MNG | EA |
-      | MNG | COL | EA |
-      | COL | MKT | EA |
-      | MKT | WTM | EA |
-      | WTM | SNF | EA |
-      | SNF | G37 | EA |
-      | G37 | G74 | EA |
-      | G74 | G01 | EA |
+      | EA | NRW | DIS |
+      | EA | DIS | SMK |
+      | EA | SMK | IPS |
+      | EA | IPS | MNG |
+      | EA | MNG | COL |
+      | EA | COL | MKT |
+      | EA | MKT | WTM |
+      | EA | WTM | SNF |
+      | EA | SNF | G37 |
+      | EA | G37 | G74 |
+      | EA | G74 | G01 |
     And "G01" to "G65" has a permitted route "SF" with:
-    # shortened but not valid because it goes G01 -> WIJ -> WTJ and the journey misses WIJ
-      | G01 | WIJ | SF |
-      | WIJ | WFJ | SF |
-    Then the journey should be "valid" because "journey follows a permitted route"
+      | SF | G01 | WFJ |
+      | SF | WFJ | BLY |
+      | SF | BLY | MKC |
+      | SF | MKC | RUG |
+      | SF | RUG | NUN |
+      | SF | NUN | G65 |
+    Then the journey should be "valid" because "journey passed long distance rules"
