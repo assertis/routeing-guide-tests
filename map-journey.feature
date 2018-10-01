@@ -293,11 +293,15 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | SRA | calling | train |
       | LST | change  | train |
       | EUS | change  | tube  |
+      | WIJ | calling | train |
       | WFJ | calling | train |
       | BLY | calling | train |
       | MKC | calling | train |
       | RUG | calling | train |
       | NUN | calling | train |
+      | TAM | calling | train |
+      | LTV | calling | train |
+      | RGL | calling | train |
       | STA | arrive  | train |
     And a "SDS" fare on route "00452" with a xLondon marker
     And there is a "SOS" from "NRW" to "STA" on route "00000" for "3050"
@@ -319,7 +323,10 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | BLY | MKC |   3.1500 |
       | MKC | RUG |  32.7700 |
       | RUG | NUN |  14.5400 |
-      | NUN | STA |  32.1600 |
+      | NUN | TAM |  12.9000 |
+      | TAM | LTV |   6.2500 |
+      | LTV | RGL |   8.0100 |
+      | RGL | STA |   5.0000 |
     And "NRW" has the routeing points "NRW"
     And "STA" has the routeing points "G65"
     And the group "G65" contains "STA"
@@ -343,10 +350,14 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | EA | G37 | G74 |
       | EA | G74 | G01 |
     And "G01" to "G65" has a permitted route "SF" with:
-      | SF | G01 | WFJ |
+      | SF | G01 | WIJ |
+      | SF | WIJ | WFJ |
       | SF | WFJ | BLY |
       | SF | BLY | MKC |
       | SF | MKC | RUG |
       | SF | RUG | NUN |
-      | SF | NUN | G65 |
+      | SF | NUN | TAM |
+      | SF | TAM | LTV |
+      | SF | LTV | RGL |
+      | SF | RGL | G65 |
     Then the journey should be "valid" because "journey passed long distance rules"
