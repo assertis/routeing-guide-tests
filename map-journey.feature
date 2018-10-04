@@ -121,6 +121,7 @@ Feature: Ensure map journeys follow a valid sequence of maps
     Then the journey should be "invalid" because "failed nfm64"
 
   # Nuneaton to York via Peterborough not valid on 00000 but is valid on 00076
+  # This test will fail on the NFM64 check and because of a negative easement
   Scenario: Some journeys are mapped via a specific location
     Given a journey:
       | NUN | depart  | train |
@@ -152,6 +153,10 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | NNG | RET | 18.51 |
       | RET | DON | 17.35 |
       | DON | YRK | 32.54 |
+    And a "negative" "circuitous route" on route "00000" easement with locations:
+      | PBO | 1 |
+      | NUN | 2 |
+      | DON | 4 |
     And "NUN" has the routeing points "NUN"
     And "YRK" has the routeing points "YRK"
     And the group "G47" contains "NCT,NNG"
@@ -175,8 +180,7 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | KY | G47 | RET |
       | KY | RET | DON |
       | KY | DON | YRK |
-    Then the journey should be "invalid" because "journey does not follow a permitted route"
-
+    Then the journey should be "invalid" because "journey doubles back"
 
   # Nuneaton to York via Peterborough not valid on 00000 but is valid on 00076
   Scenario: Some journeys are mapped via a specific location
