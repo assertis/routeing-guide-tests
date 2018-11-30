@@ -58,4 +58,5 @@ Feature: Double backs are not permitted unless an easement applies
       | FV | G85 | GRP |
       | FV | HGR | NWX |
       | FV | NWX | G01 |
-    Then the journey should be "invalid" because "journey doubles back"
+    Then the journey should be "invalid" because "journey does not follow a permitted route"
+

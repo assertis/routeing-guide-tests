@@ -180,7 +180,7 @@ Feature: Ensure map journeys follow a valid sequence of maps
       | KY | G47 | RET |
       | KY | RET | DON |
       | KY | DON | YRK |
-    Then the journey should be "invalid" because "journey doubles back"
+    Then the journey should be "invalid" because "journey does not follow a permitted route"
 
   # Nuneaton to York via Peterborough not valid on 00000 but is valid on 00076
   Scenario: Some journeys are mapped via a specific location
