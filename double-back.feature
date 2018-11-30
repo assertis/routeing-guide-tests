@@ -60,3 +60,41 @@ Feature: Double backs are not permitted unless an easement applies
       | FV | NWX | G01 |
     Then the journey should be "invalid" because "journey does not follow a permitted route"
 
+  Scenario: A double back from Tonbridge to New Cross via London Bridge is valid
+    Given a journey:
+      | TON | depart   | train     |
+      | SEV | calling  | train     |
+      | ORP | calling  | train     |
+      | PET | passing  | train     |
+      | GRP | passing  | train     |
+      | HGR | passing  | train     |
+      | NWX | passing  | train     |
+      | LBG | change   | train     |
+      | NWX | arrive   | train     |
+    And the shortest distance between "TON" and "NWX" is "24.71" miles
+    And the following distances:
+      | TON | SEV | 7.41  |
+      | SEV | ORP | 8.32  |
+      | ORP | PET | 1.14  |
+      | PET | GRP | 3.71  |
+      | GRP | HGR | 1.79  |
+      | HGR | NWX | 2.34  |
+      | NWX | LBG | 2.99  |
+      | LBG | NWX | 2.99  |
+    And there is a "SDS" from "TON" to "NWX" on route "00000" for "750"
+    And "TON" has the routeing points "TON"
+    And "NWX" has the routeing points "NWX"
+    And the group "G01" contains "LBG"
+    And the group "G85" contains "ORP,PET"
+    And "TON" to "NWX" has a permitted route "LO" with:
+      | LO | G01 | G01 |
+    And "TON" to "G01" has a permitted route "SV" with:
+      | SV | TON | SEV |
+      | SV | SEV | G85 |
+      | SV | G85 | GRP |
+      | SV | GRP | HGR |
+      | SV | HGR | NWX |
+      | SV | NWX | G01 |
+    And "G01" to "NWX" has a permitted route "BR" with:
+      | BR | G01 | NWX |
+    Then the journey should be "valid" because "journey passed long distance rules"
